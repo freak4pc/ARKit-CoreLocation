@@ -24,6 +24,8 @@ public protocol SceneLocationViewDelegate: class {
     func sceneLocationViewDidSetupSceneNode(sceneLocationView: SceneLocationView, sceneNode: SCNNode)
 
     func sceneLocationViewDidUpdateLocationAndScaleOfLocationNode(sceneLocationView: SceneLocationView, locationNode: LocationNode)
+
+
 }
 
 ///Different methods which can be used when determining locations (such as the user's location).
@@ -43,6 +45,8 @@ public class SceneLocationView: ARSCNView, ARSCNViewDelegate {
     ///The limit to the scene, in terms of what data is considered reasonably accurate.
     ///Measured in meters.
     private static let sceneLimit = 100.0
+
+    public var heading: CLLocationDirection = 0
 
     public weak var locationDelegate: SceneLocationViewDelegate?
 
@@ -520,6 +524,7 @@ extension SceneLocationView: LocationManagerDelegate {
     }
 
     func locationManagerDidUpdateHeading(_ locationManager: LocationManager, heading: CLLocationDirection, accuracy: CLLocationAccuracy) {
+        self.heading = heading
         // negative value means the heading will equal the `magneticHeading`, and we're interested in the `trueHeading`
         if accuracy < 0 {
             return
